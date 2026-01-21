@@ -1,0 +1,16 @@
+{
+  "name": "simple-todo",
+  "version": "1.0.0",
+  "description": "极简的Chrome扩展todo任务管理器",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "typescript": "^5.3.0"
+  },
+  "keywords": ["chrome-extension", "todo", "typescript"],
+  "author": "",
+  "license": "MIT"
+}

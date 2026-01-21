@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Todo</title>
+  <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 输入区域 -->
+    <div class="input-section">
+      <input 
+        type="text" 
+        id="todoInput" 
+        class="todo-input" 
+        placeholder="添加新任务..." 
+        autocomplete="off"
+      >
+    </div>
+
+    <!-- 任务列表 -->
+    <div class="todo-list" id="todoList">
+      <!-- 任务项将通过JS动态生成 -->
+    </div>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
