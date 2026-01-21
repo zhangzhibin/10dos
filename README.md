@@ -40,6 +40,8 @@ npm run watch
 
 ```
 simple-todo/
+├── docs/                   # 项目文档
+│   └── design-plan.md     # 初始设计方案
 ├── src/                    # TypeScript源码
 │   ├── popup.ts           # 核心业务逻辑
 │   ├── popup.html         # 弹窗界面
