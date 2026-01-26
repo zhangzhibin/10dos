@@ -9,6 +9,7 @@ class TodoApp {
   private todos: Todo[] = [];
   private todoInput: HTMLInputElement;
   private todoList: HTMLElement;
+  private errorMessage: HTMLElement;
   private filterMode: FilterMode = 'active';
   private readonly STORAGE_KEY = 'todos';
   private readonly MAX_ACTIVE_TODOS = 10; // 最大未完成任务数
@@ -17,6 +18,7 @@ class TodoApp {
   constructor() {
     this.todoInput = document.getElementById('todoInput') as HTMLInputElement;
     this.todoList = document.getElementById('todoList') as HTMLElement;
+    this.errorMessage = document.getElementById('errorMessage') as HTMLElement;
   }
 
   /**
@@ -62,6 +64,11 @@ class TodoApp {
       if (e.key === 'Enter') {
         this.handleAddTodo();
       }
+    });
+
+    // 输入框输入时隐藏错误提示
+    this.todoInput.addEventListener('input', () => {
+      this.hideError();
     });
 
     // 分组切换按钮
@@ -122,7 +129,19 @@ class TodoApp {
   private handleAddTodo(): void {
     const text = this.todoInput.value.trim();
     
-    if (!text) return;
+    if (!text) {
+      this.hideError();
+      return;
+    }
+
+    // 检查未完成任务数量
+    const activeTodos = this.todos.filter(t => !t.completed);
+    if (activeTodos.length >= this.MAX_ACTIVE_TODOS) {
+      this.showError(`已有${this.MAX_ACTIVE_TODOS}个未完成任务，请先完成或删除一些任务后再添加`);
+      return;
+    }
+
+    this.hideError();
 
     const newTodo: Todo = {
       id: Date.now().toString(),
@@ -133,9 +152,6 @@ class TodoApp {
 
     this.todos.push(newTodo); // 新任务添加到底部
     this.todoInput.value = '';
-    
-    // 限制未完成任务数量
-    this.limitActiveTodos();
     
     this.saveTodos();
     this.render();
@@ -174,19 +190,23 @@ class TodoApp {
   }
 
   /**
-   * 限制未完成任务数量（最多保留10个，删除最旧的）
+   * 显示错误提示
    */
-  private limitActiveTodos(): void {
-    const activeTodos = this.todos.filter(t => !t.completed);
-    
-    if (activeTodos.length > this.MAX_ACTIVE_TODOS) {
-      // 按创建时间排序，删除最旧的
-      const sortedActive = [...activeTodos].sort((a, b) => a.createdAt - b.createdAt);
-      const toDelete = sortedActive.slice(0, activeTodos.length - this.MAX_ACTIVE_TODOS);
-      const toDeleteIds = new Set(toDelete.map(t => t.id));
-      
-      this.todos = this.todos.filter(t => !toDeleteIds.has(t.id));
-    }
+  private showError(message: string): void {
+    this.errorMessage.textContent = message;
+    this.errorMessage.style.display = 'block';
+    // 3秒后自动隐藏
+    setTimeout(() => {
+      this.hideError();
+    }, 3000);
+  }
+
+  /**
+   * 隐藏错误提示
+   */
+  private hideError(): void {
+    this.errorMessage.style.display = 'none';
+    this.errorMessage.textContent = '';
   }
 
   /**

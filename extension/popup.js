@@ -7,6 +7,7 @@ class TodoApp {
         this.MAX_COMPLETED_TODOS = 10; // 最大已完成任务数
         this.todoInput = document.getElementById('todoInput');
         this.todoList = document.getElementById('todoList');
+        this.errorMessage = document.getElementById('errorMessage');
     }
     /**
      * 初始化应用
@@ -48,6 +49,10 @@ class TodoApp {
             if (e.key === 'Enter') {
                 this.handleAddTodo();
             }
+        });
+        // 输入框输入时隐藏错误提示
+        this.todoInput.addEventListener('input', () => {
+            this.hideError();
         });
         // 分组切换按钮
         const filterButtons = document.querySelectorAll('.filter-btn');
@@ -99,8 +104,17 @@ class TodoApp {
      */
     handleAddTodo() {
         const text = this.todoInput.value.trim();
-        if (!text)
+        if (!text) {
+            this.hideError();
             return;
+        }
+        // 检查未完成任务数量
+        const activeTodos = this.todos.filter(t => !t.completed);
+        if (activeTodos.length >= this.MAX_ACTIVE_TODOS) {
+            this.showError(`已有${this.MAX_ACTIVE_TODOS}个未完成任务，请先完成或删除一些任务后再添加`);
+            return;
+        }
+        this.hideError();
         const newTodo = {
             id: Date.now().toString(),
             text,
@@ -109,8 +123,6 @@ class TodoApp {
         };
         this.todos.push(newTodo); // 新任务添加到底部
         this.todoInput.value = '';
-        // 限制未完成任务数量
-        this.limitActiveTodos();
         this.saveTodos();
         this.render();
     }
@@ -144,17 +156,22 @@ class TodoApp {
         this.render();
     }
     /**
-     * 限制未完成任务数量（最多保留10个，删除最旧的）
+     * 显示错误提示
      */
-    limitActiveTodos() {
-        const activeTodos = this.todos.filter(t => !t.completed);
-        if (activeTodos.length > this.MAX_ACTIVE_TODOS) {
-            // 按创建时间排序，删除最旧的
-            const sortedActive = [...activeTodos].sort((a, b) => a.createdAt - b.createdAt);
-            const toDelete = sortedActive.slice(0, activeTodos.length - this.MAX_ACTIVE_TODOS);
-            const toDeleteIds = new Set(toDelete.map(t => t.id));
-            this.todos = this.todos.filter(t => !toDeleteIds.has(t.id));
-        }
+    showError(message) {
+        this.errorMessage.textContent = message;
+        this.errorMessage.style.display = 'block';
+        // 3秒后自动隐藏
+        setTimeout(() => {
+            this.hideError();
+        }, 3000);
+    }
+    /**
+     * 隐藏错误提示
+     */
+    hideError() {
+        this.errorMessage.style.display = 'none';
+        this.errorMessage.textContent = '';
     }
     /**
      * 限制已完成任务数量（最多保留10个，删除最早完成的）
