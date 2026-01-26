@@ -25,6 +25,14 @@ class TodoApp {
             chrome.storage.sync.get([this.STORAGE_KEY], (result) => {
                 const storage = result;
                 this.todos = storage.todos || [];
+                // 兼容旧数据：为已完成但没有completedAt的任务添加completedAt（使用createdAt）
+                this.todos.forEach(todo => {
+                    if (todo.completed && !todo.completedAt) {
+                        todo.completedAt = todo.createdAt;
+                    }
+                });
+                // 加载后检查并限制已完成任务数量
+                this.limitCompletedTodos();
                 resolve();
             });
         });
@@ -177,10 +185,15 @@ class TodoApp {
      * 限制已完成任务数量（最多保留10个，删除最早完成的）
      */
     limitCompletedTodos() {
-        const completedTodos = this.todos.filter(t => t.completed && t.completedAt);
+        const completedTodos = this.todos.filter(t => t.completed);
         if (completedTodos.length > this.MAX_COMPLETED_TODOS) {
-            // 按完成时间排序，删除最早完成的
-            const sortedCompleted = [...completedTodos].sort((a, b) => (a.completedAt || 0) - (b.completedAt || 0));
+            // 按完成时间排序（如果没有completedAt，使用createdAt作为完成时间）
+            const sortedCompleted = [...completedTodos].sort((a, b) => {
+                const aTime = a.completedAt || a.createdAt;
+                const bTime = b.completedAt || b.createdAt;
+                return aTime - bTime;
+            });
+            // 删除最早完成的（保留最新的10个）
             const toDelete = sortedCompleted.slice(0, completedTodos.length - this.MAX_COMPLETED_TODOS);
             const toDeleteIds = new Set(toDelete.map(t => t.id));
             this.todos = this.todos.filter(t => !toDeleteIds.has(t.id));
