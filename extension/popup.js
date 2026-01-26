@@ -148,83 +148,76 @@ class TodoApp {
         }
         // 按创建时间正序排序（旧任务在前，新任务在后）
         const sortedTodos = [...filteredTodos].sort((a, b) => a.createdAt - b.createdAt);
-        // 计算全局序号（基于所有任务，而不是过滤后的）
-        const allSortedTodos = [...this.todos].sort((a, b) => a.createdAt - b.createdAt);
-        const todoIndexMap = new Map(allSortedTodos.map((todo, index) => [todo.id, index + 1]));
-        const html = sortedTodos.map((todo) => {
-            const globalIndex = todoIndexMap.get(todo.id) || 0;
-            return `
+        // 计算分组内序号（从1开始，仅用于显示数量）
+        const html = sortedTodos.map((todo, index) => `
       <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
         <input 
           type="checkbox" 
           class="todo-checkbox" 
           ${todo.completed ? 'checked' : ''}
         >
-        <span class="todo-number">${globalIndex}</span>
+        <span class="todo-number">${index + 1}</span>
         <div class="todo-content">
           <span class="todo-text">${this.escapeHtml(todo.text)}</span>
           <span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>
         </div>
         <button class="todo-delete" title="删除">×</button>
       </div>
-    `;
-        }).join('');
-        this.todoList.innerHTML = html;
+    `);
     }
-    /**
-     * 格式化时间戳
-     */
-    formatTimestamp(timestamp) {
-        const now = Date.now();
-        const diff = now - timestamp;
-        const date = new Date(timestamp);
-        // 小于1分钟：刚刚
-        if (diff < 60000) {
-            return '刚刚';
-        }
-        // 小于1小时：X分钟前
-        if (diff < 3600000) {
-            const minutes = Math.floor(diff / 60000);
-            return `${minutes}分钟前`;
-        }
-        // 今天：HH:mm
-        const today = new Date();
-        if (date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()) {
-            return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-        }
-        // 昨天：昨天 HH:mm
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-        if (date.getDate() === yesterday.getDate() &&
-            date.getMonth() === yesterday.getMonth() &&
-            date.getFullYear() === yesterday.getFullYear()) {
-            return `昨天 ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
-        }
-        // 本周：周X HH:mm
-        const weekAgo = new Date(today);
-        weekAgo.setDate(weekAgo.getDate() - 7);
-        if (date > weekAgo) {
-            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-            return `周${weekdays[date.getDay()]} ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
-        }
-        // 更早：MM-DD HH:mm
-        return date.toLocaleString('zh-CN', {
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+}
+this.todoList.innerHTML = html;
+formatTimestamp(timestamp, number);
+string;
+{
+    const now = Date.now();
+    const diff = now - timestamp;
+    const date = new Date(timestamp);
+    // 小于1分钟：刚刚
+    if (diff < 60000) {
+        return '刚刚';
     }
-    /**
-     * 转义HTML特殊字符
-     */
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+    // 小于1小时：X分钟前
+    if (diff < 3600000) {
+        const minutes = Math.floor(diff / 60000);
+        return `${minutes}分钟前`;
     }
+    // 今天：HH:mm
+    const today = new Date();
+    if (date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()) {
+        return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+    }
+    // 昨天：昨天 HH:mm
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (date.getDate() === yesterday.getDate() &&
+        date.getMonth() === yesterday.getMonth() &&
+        date.getFullYear() === yesterday.getFullYear()) {
+        return `昨天 ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    // 本周：周X HH:mm
+    const weekAgo = new Date(today);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    if (date > weekAgo) {
+        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+        return `周${weekdays[date.getDay()]} ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    // 更早：MM-DD HH:mm
+    return date.toLocaleString('zh-CN', {
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+escapeHtml(text, string);
+string;
+{
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 // 初始化应用
 document.addEventListener('DOMContentLoaded', () => {

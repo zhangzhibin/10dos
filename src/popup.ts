@@ -178,20 +178,15 @@ class TodoApp {
     // 按创建时间正序排序（旧任务在前，新任务在后）
     const sortedTodos = [...filteredTodos].sort((a, b) => a.createdAt - b.createdAt);
 
-    // 计算全局序号（基于所有任务，而不是过滤后的）
-    const allSortedTodos = [...this.todos].sort((a, b) => a.createdAt - b.createdAt);
-    const todoIndexMap = new Map(allSortedTodos.map((todo, index) => [todo.id, index + 1]));
-
-    const html = sortedTodos.map((todo) => {
-      const globalIndex = todoIndexMap.get(todo.id) || 0;
-      return `
+    // 计算分组内序号（从1开始，仅用于显示数量）
+    const html = sortedTodos.map((todo, index) => `
       <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
         <input 
           type="checkbox" 
           class="todo-checkbox" 
           ${todo.completed ? 'checked' : ''}
         >
-        <span class="todo-number">${globalIndex}</span>
+        <span class="todo-number">${index + 1}</span>
         <div class="todo-content">
           <span class="todo-text">${this.escapeHtml(todo.text)}</span>
           <span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>
