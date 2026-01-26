@@ -167,12 +167,11 @@ class TodoApp {
         this.todoList.innerHTML = html;
     }
     /**
-     * 格式化时间戳
+     * 格式化时间戳 - 统一显示距离创建时间多久
      */
     formatTimestamp(timestamp) {
         const now = Date.now();
         const diff = now - timestamp;
-        const date = new Date(timestamp);
         // 小于1分钟：刚刚
         if (diff < 60000) {
             return '刚刚';
@@ -182,35 +181,29 @@ class TodoApp {
             const minutes = Math.floor(diff / 60000);
             return `${minutes}分钟前`;
         }
-        // 今天：HH:mm
-        const today = new Date();
-        if (date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()) {
-            return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        // 小于24小时：X小时前
+        if (diff < 86400000) {
+            const hours = Math.floor(diff / 3600000);
+            return `${hours}小时前`;
         }
-        // 昨天：昨天 HH:mm
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-        if (date.getDate() === yesterday.getDate() &&
-            date.getMonth() === yesterday.getMonth() &&
-            date.getFullYear() === yesterday.getFullYear()) {
-            return `昨天 ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
+        // 小于7天：X天前
+        if (diff < 604800000) {
+            const days = Math.floor(diff / 86400000);
+            return `${days}天前`;
         }
-        // 本周：周X HH:mm
-        const weekAgo = new Date(today);
-        weekAgo.setDate(weekAgo.getDate() - 7);
-        if (date > weekAgo) {
-            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-            return `周${weekdays[date.getDay()]} ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
+        // 小于30天：X周前
+        if (diff < 2592000000) {
+            const weeks = Math.floor(diff / 604800000);
+            return `${weeks}周前`;
         }
-        // 更早：MM-DD HH:mm
-        return date.toLocaleString('zh-CN', {
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        // 小于365天：X个月前
+        if (diff < 31536000000) {
+            const months = Math.floor(diff / 2592000000);
+            return `${months}个月前`;
+        }
+        // 大于等于1年：X年前
+        const years = Math.floor(diff / 31536000000);
+        return `${years}年前`;
     }
     /**
      * 转义HTML特殊字符
