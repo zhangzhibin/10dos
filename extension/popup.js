@@ -148,7 +148,8 @@ class TodoApp {
                 this.limitCompletedTodos();
             }
             else {
-                // 取消完成时，清除完成时间
+                // 取消完成时，当做新任务：更新创建时间为当前时间，清除完成时间
+                todo.createdAt = Date.now();
                 delete todo.completedAt;
             }
             this.saveTodos();
@@ -219,7 +220,22 @@ class TodoApp {
         // 按创建时间正序排序（旧任务在前，新任务在后）
         const sortedTodos = [...filteredTodos].sort((a, b) => a.createdAt - b.createdAt);
         // 计算分组内序号（从1开始，仅用于显示数量）
-        const html = sortedTodos.map((todo, index) => `
+        const html = sortedTodos.map((todo, index) => {
+            // 已完成任务显示创建时间和完成时间
+            let timestampHtml = '';
+            if (todo.completed && todo.completedAt) {
+                timestampHtml = `
+          <span class="todo-timestamp">
+            <span class="timestamp-label">创建：</span>${this.formatTimestamp(todo.createdAt)}
+            <span class="timestamp-separator"> | </span>
+            <span class="timestamp-label">完成：</span>${this.formatTimestamp(todo.completedAt)}
+          </span>
+        `;
+            }
+            else {
+                timestampHtml = `<span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>`;
+            }
+            return `
       <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
         <input 
           type="checkbox" 
@@ -229,11 +245,12 @@ class TodoApp {
         <span class="todo-number">${index + 1}</span>
         <div class="todo-content">
           <span class="todo-text">${this.escapeHtml(todo.text)}</span>
-          <span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>
+          ${timestampHtml}
         </div>
         <button class="todo-delete" title="删除">×</button>
       </div>
-    `).join('');
+    `;
+        }).join('');
         this.todoList.innerHTML = html;
     }
     /**

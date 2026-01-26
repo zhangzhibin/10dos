@@ -203,6 +203,25 @@ body {
   color: #bbb;
 }
 
+/* 时间戳标签和分隔符 */
+.timestamp-label {
+  color: #999;
+  font-weight: 500;
+}
+
+.todo-item.completed .timestamp-label {
+  color: #bbb;
+}
+
+.timestamp-separator {
+  color: #ccc;
+  margin: 0 4px;
+}
+
+.todo-item.completed .timestamp-separator {
+  color: #ddd;
+}
+
 /* 删除按钮 */
 .todo-delete {
   padding: 4px 8px;
