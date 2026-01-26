@@ -95,7 +95,7 @@ class TodoApp {
       createdAt: Date.now()
     };
 
-    this.todos.unshift(newTodo); // 新任务添加到顶部
+    this.todos.push(newTodo); // 新任务添加到底部
     this.todoInput.value = '';
     
     this.saveTodos();
@@ -132,7 +132,10 @@ class TodoApp {
       return;
     }
 
-    const html = this.todos.map(todo => `
+    // 按创建时间正序排序（旧任务在前，新任务在后）
+    const sortedTodos = [...this.todos].sort((a, b) => a.createdAt - b.createdAt);
+
+    const html = sortedTodos.map(todo => `
       <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
         <input 
           type="checkbox" 
