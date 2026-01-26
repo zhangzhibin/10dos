@@ -80,9 +80,24 @@ body {
 .todo-checkbox {
   width: 18px;
   height: 18px;
-  margin-right: 12px;
+  margin-right: 8px;
   cursor: pointer;
   flex-shrink: 0;
+}
+
+/* 序号 */
+.todo-number {
+  font-size: 12px;
+  color: #999;
+  min-width: 20px;
+  text-align: right;
+  margin-right: 8px;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.todo-item.completed .todo-number {
+  color: #bbb;
 }
 
 /* 任务内容容器 */
