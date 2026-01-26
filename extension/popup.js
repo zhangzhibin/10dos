@@ -235,8 +235,14 @@ class TodoApp {
             else {
                 timestampHtml = `<span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>`;
             }
+            // 计算未完成任务的紧急程度
+            let urgencyClass = '';
+            if (!todo.completed) {
+                const urgency = this.getUrgencyLevel(todo.createdAt);
+                urgencyClass = `urgency-${urgency}`;
+            }
             return `
-      <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
+      <div class="todo-item ${todo.completed ? 'completed' : ''} ${urgencyClass}" data-id="${todo.id}">
         <input 
           type="checkbox" 
           class="todo-checkbox" 
@@ -291,6 +297,29 @@ class TodoApp {
         // 大于等于1年：X年前
         const years = Math.floor(diff / 31536000000);
         return `${years}年前`;
+    }
+    /**
+     * 获取任务紧急程度
+     * @param createdAt 创建时间戳
+     * @returns 'low' | 'medium' | 'high' - 对应绿色、黄色、红色
+     */
+    getUrgencyLevel(createdAt) {
+        const now = Date.now();
+        const diff = now - createdAt;
+        // 6小时 = 21600000毫秒
+        // 2天 = 172800000毫秒
+        if (diff < 21600000) {
+            // 小于6小时：绿色（不紧急）
+            return 'low';
+        }
+        else if (diff < 172800000) {
+            // 6小时到2天：黄色（中等）
+            return 'medium';
+        }
+        else {
+            // 超过2天：红色（紧急）
+            return 'high';
+        }
     }
     /**
      * 转义HTML特殊字符

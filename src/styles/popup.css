@@ -143,6 +143,34 @@ body {
   background-color: #fafafa;
 }
 
+/* 未完成任务紧急程度背景色 */
+.todo-item.urgency-low {
+  background-color: #f0f9f0;
+  border-left: 3px solid #4caf50;
+}
+
+.todo-item.urgency-low:hover {
+  background-color: #e8f5e9;
+}
+
+.todo-item.urgency-medium {
+  background-color: #fffbf0;
+  border-left: 3px solid #ffc107;
+}
+
+.todo-item.urgency-medium:hover {
+  background-color: #fff8e1;
+}
+
+.todo-item.urgency-high {
+  background-color: #ffebee;
+  border-left: 3px solid #f44336;
+}
+
+.todo-item.urgency-high:hover {
+  background-color: #ffcdd2;
+}
+
 .todo-item:last-child {
   border-bottom: none;
 }
