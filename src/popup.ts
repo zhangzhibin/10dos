@@ -193,8 +193,7 @@ class TodoApp {
         </div>
         <button class="todo-delete" title="删除">×</button>
       </div>
-    `;
-    }).join('');
+    `).join('');
 
     this.todoList.innerHTML = html;
   }
