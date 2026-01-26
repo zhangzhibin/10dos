@@ -1,9 +1,7 @@
-/**
- * Todo应用主类
- */
 class TodoApp {
     constructor() {
         this.todos = [];
+        this.filterMode = 'active';
         this.STORAGE_KEY = 'todos';
         this.todoInput = document.getElementById('todoInput');
         this.todoList = document.getElementById('todoList');
@@ -49,6 +47,17 @@ class TodoApp {
                 this.handleAddTodo();
             }
         });
+        // 分组切换按钮
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.target;
+                const filter = target.dataset.filter;
+                if (filter) {
+                    this.setFilterMode(filter);
+                }
+            });
+        });
         // 任务列表事件委托
         this.todoList.addEventListener('click', (e) => {
             const target = e.target;
@@ -65,6 +74,23 @@ class TodoApp {
                 this.deleteTodo(todoId);
             }
         });
+    }
+    /**
+     * 设置过滤模式
+     */
+    setFilterMode(mode) {
+        this.filterMode = mode;
+        // 更新按钮状态
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            const filterBtn = btn;
+            if (filterBtn.dataset.filter === mode) {
+                filterBtn.classList.add('active');
+            }
+            else {
+                filterBtn.classList.remove('active');
+            }
+        });
+        this.render();
     }
     /**
      * 添加新任务
@@ -107,27 +133,42 @@ class TodoApp {
      * 渲染任务列表
      */
     render() {
-        if (this.todos.length === 0) {
-            this.todoList.innerHTML = '';
+        // 根据过滤模式筛选任务
+        let filteredTodos = this.todos;
+        if (this.filterMode === 'active') {
+            filteredTodos = this.todos.filter(t => !t.completed);
+        }
+        else if (this.filterMode === 'completed') {
+            filteredTodos = this.todos.filter(t => t.completed);
+        }
+        if (filteredTodos.length === 0) {
+            const emptyText = this.filterMode === 'active' ? '暂无未完成任务' : '暂无已完成任务';
+            this.todoList.innerHTML = `<div class="empty-state">${emptyText}</div>`;
             return;
         }
         // 按创建时间正序排序（旧任务在前，新任务在后）
-        const sortedTodos = [...this.todos].sort((a, b) => a.createdAt - b.createdAt);
-        const html = sortedTodos.map((todo, index) => `
+        const sortedTodos = [...filteredTodos].sort((a, b) => a.createdAt - b.createdAt);
+        // 计算全局序号（基于所有任务，而不是过滤后的）
+        const allSortedTodos = [...this.todos].sort((a, b) => a.createdAt - b.createdAt);
+        const todoIndexMap = new Map(allSortedTodos.map((todo, index) => [todo.id, index + 1]));
+        const html = sortedTodos.map((todo) => {
+            const globalIndex = todoIndexMap.get(todo.id) || 0;
+            return `
       <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
         <input 
           type="checkbox" 
           class="todo-checkbox" 
           ${todo.completed ? 'checked' : ''}
         >
-        <span class="todo-number">${index + 1}</span>
+        <span class="todo-number">${globalIndex}</span>
         <div class="todo-content">
           <span class="todo-text">${this.escapeHtml(todo.text)}</span>
           <span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>
         </div>
         <button class="todo-delete" title="删除">×</button>
       </div>
-    `).join('');
+    `;
+        }).join('');
         this.todoList.innerHTML = html;
     }
     /**
