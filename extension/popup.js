@@ -22,17 +22,25 @@ class TodoApp {
      */
     async loadTodos() {
         return new Promise((resolve) => {
-            chrome.storage.sync.get([this.STORAGE_KEY], (result) => {
+            chrome.storage.sync.get([this.STORAGE_KEY], async (result) => {
                 const storage = result;
                 this.todos = storage.todos || [];
+                let needSave = false;
                 // 兼容旧数据：为已完成但没有completedAt的任务添加completedAt（使用createdAt）
                 this.todos.forEach(todo => {
                     if (todo.completed && !todo.completedAt) {
                         todo.completedAt = todo.createdAt;
+                        needSave = true;
                     }
                 });
                 // 加载后检查并限制已完成任务数量
+                const beforeCount = this.todos.length;
                 this.limitCompletedTodos();
+                const afterCount = this.todos.length;
+                // 如果删除了任务或修改了数据，需要保存
+                if (needSave || beforeCount !== afterCount) {
+                    await this.saveTodos();
+                }
                 resolve();
             });
         });
