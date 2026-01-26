@@ -3,6 +3,8 @@ class TodoApp {
         this.todos = [];
         this.filterMode = 'active';
         this.STORAGE_KEY = 'todos';
+        this.MAX_ACTIVE_TODOS = 10; // 最大未完成任务数
+        this.MAX_COMPLETED_TODOS = 10; // 最大已完成任务数
         this.todoInput = document.getElementById('todoInput');
         this.todoList = document.getElementById('todoList');
     }
@@ -107,6 +109,8 @@ class TodoApp {
         };
         this.todos.push(newTodo); // 新任务添加到底部
         this.todoInput.value = '';
+        // 限制未完成任务数量
+        this.limitActiveTodos();
         this.saveTodos();
         this.render();
     }
@@ -117,6 +121,16 @@ class TodoApp {
         const todo = this.todos.find(t => t.id === id);
         if (todo) {
             todo.completed = !todo.completed;
+            if (todo.completed) {
+                // 标记为完成时，记录完成时间
+                todo.completedAt = Date.now();
+                // 限制已完成任务数量
+                this.limitCompletedTodos();
+            }
+            else {
+                // 取消完成时，清除完成时间
+                delete todo.completedAt;
+            }
             this.saveTodos();
             this.render();
         }
@@ -128,6 +142,32 @@ class TodoApp {
         this.todos = this.todos.filter(t => t.id !== id);
         this.saveTodos();
         this.render();
+    }
+    /**
+     * 限制未完成任务数量（最多保留10个，删除最旧的）
+     */
+    limitActiveTodos() {
+        const activeTodos = this.todos.filter(t => !t.completed);
+        if (activeTodos.length > this.MAX_ACTIVE_TODOS) {
+            // 按创建时间排序，删除最旧的
+            const sortedActive = [...activeTodos].sort((a, b) => a.createdAt - b.createdAt);
+            const toDelete = sortedActive.slice(0, activeTodos.length - this.MAX_ACTIVE_TODOS);
+            const toDeleteIds = new Set(toDelete.map(t => t.id));
+            this.todos = this.todos.filter(t => !toDeleteIds.has(t.id));
+        }
+    }
+    /**
+     * 限制已完成任务数量（最多保留10个，删除最早完成的）
+     */
+    limitCompletedTodos() {
+        const completedTodos = this.todos.filter(t => t.completed && t.completedAt);
+        if (completedTodos.length > this.MAX_COMPLETED_TODOS) {
+            // 按完成时间排序，删除最早完成的
+            const sortedCompleted = [...completedTodos].sort((a, b) => (a.completedAt || 0) - (b.completedAt || 0));
+            const toDelete = sortedCompleted.slice(0, completedTodos.length - this.MAX_COMPLETED_TODOS);
+            const toDeleteIds = new Set(toDelete.map(t => t.id));
+            this.todos = this.todos.filter(t => !toDeleteIds.has(t.id));
+        }
     }
     /**
      * 渲染任务列表

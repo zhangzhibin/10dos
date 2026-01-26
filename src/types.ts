@@ -10,6 +10,8 @@ export interface Todo {
   completed: boolean;
   /** 创建时间戳 */
   createdAt: number;
+  /** 完成时间戳（仅已完成任务有此字段） */
+  completedAt?: number;
 }
 
 /**
