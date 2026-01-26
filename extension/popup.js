@@ -118,11 +118,60 @@ class TodoApp {
           class="todo-checkbox" 
           ${todo.completed ? 'checked' : ''}
         >
-        <span class="todo-text">${this.escapeHtml(todo.text)}</span>
+        <div class="todo-content">
+          <span class="todo-text">${this.escapeHtml(todo.text)}</span>
+          <span class="todo-timestamp">${this.formatTimestamp(todo.createdAt)}</span>
+        </div>
         <button class="todo-delete" title="删除">×</button>
       </div>
     `).join('');
         this.todoList.innerHTML = html;
+    }
+    /**
+     * 格式化时间戳
+     */
+    formatTimestamp(timestamp) {
+        const now = Date.now();
+        const diff = now - timestamp;
+        const date = new Date(timestamp);
+        // 小于1分钟：刚刚
+        if (diff < 60000) {
+            return '刚刚';
+        }
+        // 小于1小时：X分钟前
+        if (diff < 3600000) {
+            const minutes = Math.floor(diff / 60000);
+            return `${minutes}分钟前`;
+        }
+        // 今天：HH:mm
+        const today = new Date();
+        if (date.getDate() === today.getDate() &&
+            date.getMonth() === today.getMonth() &&
+            date.getFullYear() === today.getFullYear()) {
+            return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        }
+        // 昨天：昨天 HH:mm
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        if (date.getDate() === yesterday.getDate() &&
+            date.getMonth() === yesterday.getMonth() &&
+            date.getFullYear() === yesterday.getFullYear()) {
+            return `昨天 ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
+        }
+        // 本周：周X HH:mm
+        const weekAgo = new Date(today);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        if (date > weekAgo) {
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            return `周${weekdays[date.getDay()]} ${date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`;
+        }
+        // 更早：MM-DD HH:mm
+        return date.toLocaleString('zh-CN', {
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     }
     /**
      * 转义HTML特殊字符

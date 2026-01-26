@@ -85,9 +85,16 @@ body {
   flex-shrink: 0;
 }
 
+/* 任务内容容器 */
+.todo-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 /* 任务文本 */
 .todo-text {
-  flex: 1;
   font-size: 14px;
   line-height: 1.5;
   word-break: break-word;
@@ -97,6 +104,17 @@ body {
 .todo-item.completed .todo-text {
   color: #999;
   text-decoration: line-through;
+}
+
+/* 时间戳 */
+.todo-timestamp {
+  font-size: 11px;
+  color: #999;
+  line-height: 1.2;
+}
+
+.todo-item.completed .todo-timestamp {
+  color: #bbb;
 }
 
 /* 删除按钮 */
