@@ -1,47 +1,68 @@
 ---
-import { getEntry, render } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
 
-const entry = await getEntry('en', 'index');
-if (!entry) throw new Error('Missing content: en/index');
+export async function getStaticPaths() {
+  const entries = await getCollection('ja');
+  return entries.map((e) => ({
+    params: {
+      lang: 'ja',
+      slug: e.slug === 'index' ? undefined : e.slug,
+    },
+    props: { lang: 'ja' as const, slug: e.slug },
+  }));
+}
+
+const { lang, slug } = Astro.props;
+const entry = await getEntry('ja', slug);
+if (!entry) return Astro.redirect('/ja/');
 
 const { Content } = await render(entry);
-const { title, description, tagline } = entry.data;
+const { title, description, tagline, ogImage } = entry.data;
+const isIndex = slug === 'index';
+const isInstall = slug === 'install';
+const canonicalPath = isIndex ? '/ja/' : `/ja/${slug}/`;
 ---
 <Layout
   title={title}
   description={description}
-  showJsonLd={true}
+  canonicalPath={canonicalPath}
+  ogImage={ogImage}
+  showJsonLd={isInstall}
+  lang="ja"
 >
   <main>
-    <header>
-      <h1>10dos</h1>
-      {tagline && <p class="tagline">{tagline}</p>}
-    </header>
-
-    <figure class="img-placeholder img-placeholder--hero" aria-hidden="true">
-      <span>Placeholder — Extension in browser (e.g. 800×400)</span>
-    </figure>
-
+    {isIndex && tagline && (
+      <header>
+        <h1>10dos</h1>
+        <p class="tagline">{tagline}</p>
+      </header>
+    )}
+    {slug === 'how-it-works' && (
+      <figure class="img-placeholder img-placeholder--hero" aria-hidden="true">
+        <span>Placeholder — 使い方イラスト (e.g. 800×400)</span>
+      </figure>
+    )}
+    {slug === 'install' && (
+      <figure class="img-placeholder img-placeholder--square" aria-hidden="true">
+        <span>Placeholder — 拡張機能アイコン (280×280)</span>
+      </figure>
+    )}
     <article class="content">
       <Content />
     </article>
-
-    <figure class="img-placeholder img-placeholder--card" aria-hidden="true">
-      <span>Placeholder — Product / list preview (e.g. 640×360)</span>
-    </figure>
-
-    <section class="cta">
-      <p>Install the extension and keep only the 10 tasks that count.</p>
-      <a
-        href="https://chromewebstore.google.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="button"
-      >
-        Get it from Chrome Web Store
-      </a>
-    </section>
+    {isInstall && (
+      <section class="cta">
+        <a
+          href="https://chromewebstore.google.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button"
+        >
+          Chrome ウェブストアで入手
+        </a>
+      </section>
+    )}
   </main>
 </Layout>
 
@@ -88,10 +109,6 @@ const { title, description, tagline } = entry.data;
     color: var(--color-text);
   }
 
-  .content :global(p:last-child) {
-    margin-bottom: 0;
-  }
-
   .content :global(h2) {
     font-size: 1.25rem;
     font-weight: 600;
@@ -100,7 +117,7 @@ const { title, description, tagline } = entry.data;
     color: var(--color-text);
   }
 
-  .content :global(h2:first-of-type) {
+  .content :global(h2:first-child) {
     margin-top: 0;
   }
 
@@ -119,19 +136,9 @@ const { title, description, tagline } = entry.data;
     text-underline-offset: 2px;
   }
 
-  .content :global(a:hover) {
-    text-decoration-thickness: 2px;
-  }
-
   .cta {
     margin-bottom: 2rem;
     padding: 1.5rem 0;
-  }
-
-  .cta p {
-    margin: 0 0 1rem 0;
-    color: var(--color-text-muted);
-    font-size: 0.9375rem;
   }
 
   .button {

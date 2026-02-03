@@ -1,0 +1,125 @@
+---
+import { locales, getLocaleHomePath, type Locale } from './locales.ts';
+
+interface Props {
+  currentLang: Locale;
+}
+const { currentLang } = Astro.props;
+const current = locales.find((l) => l.code === currentLang);
+---
+<div class="lang-menu" role="group" aria-label="Language">
+  <details class="lang-details">
+    <summary class="lang-summary" aria-haspopup="listbox" aria-expanded="false">
+      <span class="lang-current">{current?.label ?? currentLang}</span>
+      <span class="lang-chevron" aria-hidden="true">▼</span>
+    </summary>
+    <ul class="lang-list" role="listbox">
+      {locales.map((loc) => {
+        const href = getLocaleHomePath(loc.code);
+        const isActive = loc.code === currentLang;
+        return (
+          <li role="option" aria-selected={isActive}>
+            <a href={href} class:list={['lang-item', { active: isActive }]}>
+              {loc.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </details>
+</div>
+
+<style>
+  .lang-menu {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid var(--color-border);
+    font-size: 0.875rem;
+  }
+
+  .lang-details {
+    position: relative;
+  }
+
+  .lang-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .lang-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang-summary:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .lang-chevron {
+    font-size: 0.6em;
+    opacity: 0.8;
+    transition: transform var(--transition);
+  }
+
+  .lang-details[open] .lang-chevron {
+    transform: rotate(180deg);
+  }
+
+  .lang-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin: 0.25rem 0 0 0;
+    padding: 0.25rem 0;
+    min-width: 8rem;
+    list-style: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) {
+    .lang-menu {
+      margin-left: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    .lang-summary {
+      min-height: 44px;
+      padding: 0.5rem 0.5rem;
+    }
+
+    .lang-list {
+      right: 0;
+      left: auto;
+    }
+  }
+
+  .lang-item {
+    display: block;
+    padding: 0.4rem 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .lang-item:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .lang-item.active {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+</style>

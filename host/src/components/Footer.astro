@@ -1,12 +1,17 @@
 ---
-import { navLinks } from './nav.ts';
+import { navLinks, getNavHref, getNavLabel, type Locale } from './nav.ts';
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = 'en' } = Astro.props;
 ---
 <footer class="site-footer">
   <nav class="footer-nav" aria-label="Footer">
     <ul>
-      {navLinks.map(({ href, label }) => (
+      {navLinks.map((item) => (
         <li>
-          <a href={href}>{label}</a>
+          <a href={getNavHref(item.href, lang)}>{getNavLabel(item, lang)}</a>
         </li>
       ))}
     </ul>
@@ -20,11 +25,31 @@ import { navLinks } from './nav.ts';
   .site-footer {
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding: 2rem 1.5rem;
+    padding: var(--page-padding-y, 2rem) var(--page-padding-x, 1.5rem);
     margin-top: 3rem;
     font-size: 0.875rem;
     color: var(--color-text-muted);
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .site-footer {
+      margin-top: 2rem;
+      padding: 1.5rem var(--page-padding-x);
+    }
+
+    .footer-nav ul {
+      gap: 0 0.75rem;
+      row-gap: 0.25rem;
+    }
+
+    .footer-nav a {
+      padding: 0.35rem 0;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .footer-nav ul {
