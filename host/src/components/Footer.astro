@@ -1,0 +1,62 @@
+---
+import { navLinks } from './nav.ts';
+---
+<footer class="site-footer">
+  <nav class="footer-nav" aria-label="Footer">
+    <ul>
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a href={href}>{label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <p class="credit">
+    <a href="https://10dos.com">10dos.com</a> — minimal todo, clear choices.
+  </p>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding: 2rem 1.5rem;
+    margin-top: 3rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  .footer-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.25rem;
+    list-style: none;
+    margin: 0 0 1rem 0;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .footer-nav a {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    transition: color var(--transition);
+  }
+
+  .footer-nav a:hover {
+    color: var(--color-text);
+  }
+
+  .credit {
+    margin: 0;
+  }
+
+  .credit a {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .credit a:hover {
+    color: var(--color-link-hover);
+  }
+</style>

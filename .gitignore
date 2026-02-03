@@ -17,3 +17,7 @@ npm-debug.log*
 # 编译输出（可选：如果希望提交编译后的代码供直接使用，可以注释掉以下行）
 # extension/*.js
 # extension/*.js.map
+
+# Astro / host
+host/dist/
+host/.astro/

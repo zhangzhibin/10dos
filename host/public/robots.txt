@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://10dos.com/sitemap-index.xml

@@ -1,0 +1,88 @@
+---
+import { navLinks } from './nav.ts';
+
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+/** 规范化路径便于比较：去掉末尾斜杠，空为 / */
+function norm(path: string) {
+  const p = path.replace(/\/$/, '') || '/';
+  return p === '' ? '/' : p;
+}
+const current = norm(currentPath);
+---
+<header class="site-header">
+  <a href="/" class="logo">10dos</a>
+  <nav class="nav" aria-label="Main">
+    <ul>
+      {navLinks.map(({ href, label }) => {
+        const isActive = norm(href) === current;
+        return (
+          <li>
+            <a href={href} class:list={['nav-link', { active: isActive }]}>{label}</a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    padding: 1rem 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .logo:hover {
+    color: var(--color-link-hover);
+  }
+
+  .nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-end;
+  }
+
+  .nav-link {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav-link:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .nav-link.active {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+</style>
