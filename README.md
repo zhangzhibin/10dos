@@ -1,6 +1,6 @@
 # 10dos – Minimal todos Chrome extension
 
-[中文介绍](README.zh-CN.md)
+[中文介绍](README.zh-CN.md) · [GitHub](https://github.com/zhangzhibin/10dos) · [官网](https://10dos.com)
 
 A minimal todos Chrome extension built with TypeScript. Click the extension icon to view and edit tasks quickly.
 
@@ -40,18 +40,12 @@ npm run watch
 4. Select the project’s `extension/` folder
 5. Use the extension from the toolbar icon
 
-### Host (optional submodule)
+### Host (optional — same workspace)
 
-The `host/` directory is the 10dos website (Astro), in a separate repo [10dos.com](https://github.com/zhangzhibin/10dos.com). To get it when cloning:
-
-```bash
-git clone --recurse-submodules https://github.com/zhangzhibin/10dos.git
-```
-
-Or after a normal clone:
+The 10dos website is a separate repo [10dos.com](https://github.com/zhangzhibin/10dos.com). To edit both extension and site in one place, clone it into `host/` (ignored by this repo):
 
 ```bash
-git submodule update --init host
+git clone https://github.com/zhangzhibin/10dos.com.git host
 ```
 
 Then `cd host && npm install && npm run dev` to run the site locally.
@@ -60,7 +54,7 @@ Then `cd host && npm install && npm run dev` to run the site locally.
 
 ```
 10dos/
-├── host/                   # Website (optional submodule → 10dos.com)
+├── host/                   # Optional: clone 10dos.com here to work on both
 ├── docs/                   # Project docs
 │   └── design-plan.md     # Design plan
 ├── src/                    # TypeScript source

@@ -21,6 +21,5 @@ npm-debug.log*
 # 扩展打包输出（Chrome 商店用）
 dist/
 
-# Astro / host
-host/dist/
-host/.astro/
+# 官网代码（独立仓库，需同时改两项目时可克隆到此处）
+host/

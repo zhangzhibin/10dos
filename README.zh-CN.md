@@ -1,6 +1,6 @@
 # 10dos - 极简todos插件
 
-[English](README.md)
+[English](README.md) · [GitHub](https://github.com/zhangzhibin/10dos) · [官网](https://10dos.com)
 
 极简 todos Chrome 扩展，使用 TypeScript 开发，点击图标即可快速查看和编辑任务。
 
@@ -40,18 +40,12 @@ npm run watch
 4. 选择项目中的 `extension/` 目录
 5. 扩展加载成功！点击工具栏图标即可使用
 
-### Host（可选子模块）
+### Host（可选 — 同工作区）
 
-`host/` 为 10dos 官网（Astro），单独仓库 [10dos.com](https://github.com/zhangzhibin/10dos.com)。克隆时一并拉取子模块：
-
-```bash
-git clone --recurse-submodules https://github.com/zhangzhibin/10dos.git
-```
-
-若已克隆，可之后初始化：
+官网在独立仓库 [10dos.com](https://github.com/zhangzhibin/10dos.com)。若想在一个目录里同时改扩展和官网，可把官网克隆到 `host/`（本仓库已忽略该目录）：
 
 ```bash
-git submodule update --init host
+git clone https://github.com/zhangzhibin/10dos.com.git host
 ```
 
 然后执行 `cd host && npm install && npm run dev` 本地运行官网。
@@ -60,7 +54,7 @@ git submodule update --init host
 
 ```
 10dos/
-├── host/                   # 官网（可选子模块 → 10dos.com）
+├── host/                   # 可选：克隆 10dos.com 到此目录即可同时改两处
 ├── docs/                   # 项目文档
 │   └── design-plan.md     # 初始设计方案
 ├── src/                    # TypeScript源码
