@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,27 +8,23 @@
 </head>
 <body>
   <div class="container">
-    <!-- 输入区域 -->
+    <div class="filter-section">
+      <button class="filter-btn active" data-filter="active">Active</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+    </div>
+
+    <div class="todo-list" id="todoList">
+    </div>
+
     <div class="input-section">
       <input 
         type="text" 
         id="todoInput" 
         class="todo-input" 
-        placeholder="添加新任务..." 
+        placeholder="Add new task..." 
         autocomplete="off"
       >
       <div class="error-message" id="errorMessage" style="display: none;"></div>
-    </div>
-
-    <!-- 分组切换 -->
-    <div class="filter-section">
-      <button class="filter-btn active" data-filter="active">未完成</button>
-      <button class="filter-btn" data-filter="completed">已完成</button>
-    </div>
-
-    <!-- 任务列表 -->
-    <div class="todo-list" id="todoList">
-      <!-- 任务项将通过JS动态生成 -->
     </div>
   </div>
 

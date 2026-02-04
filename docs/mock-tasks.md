@@ -1,0 +1,31 @@
+# Mock tasks for testing
+
+## Load by input: `#mock N`
+
+In the popup, type **#mock 1**, **#mock 2**, **#mock 3**, or **#mock 4** and press Enter to load the Nth group of mock tasks (replaces current list).
+
+| Group | Description |
+|-------|-------------|
+| **#mock 1** | Urgency mix: 4 green, 3 yellow, 3 red (plugin dev steps) |
+| **#mock 2** | All recent: 10 tasks &lt; 24h (all green) |
+| **#mock 3** | 5 active + 5 completed (test Completed tab and Created/Done times) |
+| **#mock 4** | All old: 10 tasks &gt; 1 week (all red) |
+
+Invalid or out-of-range (e.g. `#mock 5`) shows an error. Only groups 1–4 exist.
+
+---
+
+## Alternative: load via HTML page
+
+1. In Chrome, go to `chrome://extensions/`, find **Simple Todo**, copy the extension ID.
+2. Open: `chrome-extension://[YOUR-EXTENSION-ID]/load-mock-todos.html`
+3. Click **Load 10 mock tasks** (loads group 1 style data).
+4. Open the extension popup to see the list.
+
+---
+
+## Urgency rules
+
+- **Green**: &lt; 24h  
+- **Yellow**: 24h – 72h  
+- **Red**: &gt; 72h  

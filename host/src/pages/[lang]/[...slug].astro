@@ -38,16 +38,6 @@ const canonicalPath = isIndex ? '/ja/' : `/ja/${slug}/`;
         <p class="tagline">{tagline}</p>
       </header>
     )}
-    {slug === 'how-it-works' && (
-      <figure class="img-placeholder img-placeholder--hero" aria-hidden="true">
-        <span>Placeholder — 使い方イラスト (e.g. 800×400)</span>
-      </figure>
-    )}
-    {slug === 'install' && (
-      <figure class="img-placeholder img-placeholder--square" aria-hidden="true">
-        <span>Placeholder — 拡張機能アイコン (280×280)</span>
-      </figure>
-    )}
     <article class="content">
       <Content />
     </article>

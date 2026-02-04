@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Simple Todo",
   "version": "1.0.0",
-  "description": "极简的todo任务管理器",
+  "description": "A minimal todo task manager",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

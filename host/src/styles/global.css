@@ -65,36 +65,3 @@ a:hover {
   color: var(--color-link-hover);
 }
 
-/* 图片占位符：后续可替换为真实图片 */
-.img-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-border);
-  border: 2px dashed #cbd5e1;
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
-  overflow: hidden;
-}
-
-.img-placeholder--hero {
-  aspect-ratio: 2 / 1;
-  max-width: 100%;
-  margin-bottom: 2rem;
-}
-
-.img-placeholder--card {
-  aspect-ratio: 16 / 9;
-  max-width: 100%;
-  margin: 1rem 0;
-}
-
-.img-placeholder--square {
-  aspect-ratio: 1;
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto 1.5rem;
-  border-radius: var(--radius-lg);
-}

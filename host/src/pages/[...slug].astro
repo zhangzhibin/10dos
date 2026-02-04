@@ -28,16 +28,6 @@ const isInstall = slug === 'install';
   showJsonLd={isInstall}
 >
   <main>
-    {slug === 'how-it-works' && (
-      <figure class="img-placeholder img-placeholder--hero" aria-hidden="true">
-        <span>Placeholder — How it works illustration (e.g. 800×400)</span>
-      </figure>
-    )}
-    {slug === 'install' && (
-      <figure class="img-placeholder img-placeholder--square" aria-hidden="true">
-        <span>Placeholder — Extension icon / store (280×280)</span>
-      </figure>
-    )}
     <article class="content">
       <Content />
     </article>
