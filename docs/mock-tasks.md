@@ -16,15 +16,6 @@ Invalid or out-of-range (e.g. `#mock 5`) shows an error. Use **#mock 0** for rea
 
 ---
 
-## Alternative: load via HTML page
-
-1. In Chrome, go to `chrome://extensions/`, find **10dos**, copy the extension ID.
-2. Open: `chrome-extension://[YOUR-EXTENSION-ID]/load-mock-todos.html`
-3. Click **Load 10 mock tasks** (loads group 1 style data).
-4. Open the extension popup to see the list.
-
----
-
 ## Urgency rules
 
 - **Green**: &lt; 24h  

@@ -18,6 +18,9 @@ npm-debug.log*
 # extension/*.js
 # extension/*.js.map
 
+# 扩展打包输出（Chrome 商店用）
+dist/
+
 # Astro / host
 host/dist/
 host/.astro/

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "10dos",
   "version": "1.0.0",
-  "description": "极简todos插件",
+  "description": "Minimal todo list in your browser. Quick add, complete, delete. Syncs across devices.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

@@ -4,7 +4,8 @@
   "description": "极简todos插件",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "pack": "bash scripts/pack-extension.sh"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.268",
