@@ -4,6 +4,8 @@
 
 极简 todos Chrome 扩展，使用 TypeScript 开发，点击图标即可快速查看和编辑任务。
 
+![10dos 弹窗 - 进行中](screenshots/10dos-1.png)
+
 ## ✨ 特性
 
 - 🎯 **极简设计** - 纯CSS样式，无外部UI框架依赖

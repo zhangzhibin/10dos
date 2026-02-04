@@ -4,6 +4,8 @@
 
 A minimal todos Chrome extension built with TypeScript. Click the extension icon to view and edit tasks quickly.
 
+![10dos popup – Active tab](screenshots/10dos-1.png)
+
 ## ✨ Features
 
 - **Minimal design** – Pure CSS, no external UI framework
