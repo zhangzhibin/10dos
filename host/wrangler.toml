@@ -1,7 +1,0 @@
-# Cloudflare Pages: connect repo in dashboard, or deploy with Wrangler
-# Build command: npm run build
-# Build output directory: dist
-
-name = "10dos"
-compatibility_date = "2025-01-01"
-pages_build_output_dir = "dist"

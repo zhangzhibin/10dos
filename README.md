@@ -40,10 +40,27 @@ npm run watch
 4. Select the project’s `extension/` folder
 5. Use the extension from the toolbar icon
 
+### Host (optional submodule)
+
+The `host/` directory is the 10dos website (Astro), in a separate repo [10dos.com](https://github.com/zhangzhibin/10dos.com). To get it when cloning:
+
+```bash
+git clone --recurse-submodules https://github.com/zhangzhibin/10dos.git
+```
+
+Or after a normal clone:
+
+```bash
+git submodule update --init host
+```
+
+Then `cd host && npm install && npm run dev` to run the site locally.
+
 ## 📁 Project structure
 
 ```
 10dos/
+├── host/                   # Website (optional submodule → 10dos.com)
 ├── docs/                   # Project docs
 │   └── design-plan.md     # Design plan
 ├── src/                    # TypeScript source

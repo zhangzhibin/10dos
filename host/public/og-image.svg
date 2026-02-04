@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#fafafa"/>
-  <rect x="2" y="2" width="1196" height="626" fill="none" stroke="#1a1a1a" stroke-width="2" rx="8"/>
-  <text x="600" y="300" font-family="system-ui, sans-serif" font-size="48" font-weight="700" fill="#1a1a1a" text-anchor="middle">10dos</text>
-  <text x="600" y="360" font-family="system-ui, sans-serif" font-size="24" fill="#555" text-anchor="middle">Minimal todo. Only 10 tasks.</text>
-</svg>

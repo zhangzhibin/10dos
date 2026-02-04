@@ -1,0 +1,3 @@
+[submodule "host"]
+	path = host
+	url = git@github.com:zhangzhibin/10dos.com.git
