@@ -33,7 +33,7 @@ todos:
 ## 项目结构
 
 ```
-simple-todo/
+10dos/
 ├── src/
 │   ├── popup.ts          # 核心业务逻辑
 │   ├── popup.html        # 弹窗界面

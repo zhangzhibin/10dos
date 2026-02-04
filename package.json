@@ -1,7 +1,7 @@
 {
-  "name": "simple-todo",
+  "name": "10dos",
   "version": "1.0.0",
-  "description": "极简的Chrome扩展todo任务管理器",
+  "description": "极简todos插件",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch"

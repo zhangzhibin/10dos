@@ -9,7 +9,7 @@ interface MockTaskDef {
   completed?: boolean;
 }
 
-/** Mock task groups for testing. Input "#mock 1" loads group 1, "#mock 2" loads group 2, etc. */
+/** Mock task groups for testing. "#mock 0" = load real data; "#mock 1".."#mock 4" = load mock group 1..4. */
 const MOCK_GROUPS: MockTaskDef[][] = [
   // Group 1: Urgency mix (green / yellow / red)
   [
@@ -207,9 +207,10 @@ class TodoApp {
   }
 
   /**
-   * 添加新任务（或解析 #mock N 加载第 N 组 mock 任务）
+   * 添加新任务（或解析 #mock N 加载 mock/实际数据）
+   * #mock 0 = 加载实际存储数据，#mock 1..4 = 加载对应 mock 组
    */
-  private handleAddTodo(): void {
+  private async handleAddTodo(): Promise<void> {
     const text = this.todoInput.value.trim();
     
     if (!text) {
@@ -217,17 +218,26 @@ class TodoApp {
       return;
     }
 
-    // #mock N → load Nth mock group (1-based)
+    // #mock N → #mock 0 加载实际数据，#mock 1..4 加载第 N 组 mock
     const mockMatch = text.match(/^#mock\s*(\d+)$/i);
     if (mockMatch) {
       const groupIndex = parseInt(mockMatch[1], 10);
+      if (groupIndex === 0) {
+        await this.loadTodos();
+        this.todoInput.value = '';
+        this.hideError();
+        this.showError('Loaded real data.');
+        setTimeout(() => this.hideError(), 1500);
+        this.render();
+        return;
+      }
       if (groupIndex >= 1 && groupIndex <= MOCK_GROUPS.length) {
         this.loadMockGroup(groupIndex - 1);
         this.todoInput.value = '';
         this.hideError();
         return;
       }
-      this.showError(`Mock group 1–${MOCK_GROUPS.length} only. Use #mock 1 to #mock ${MOCK_GROUPS.length}.`);
+      this.showError(`Use #mock 0 for real data, #mock 1–${MOCK_GROUPS.length} for mock groups.`);
       return;
     }
 
