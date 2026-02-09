@@ -1,6 +1,6 @@
 # 10dos - 极简todos插件
 
-[English](README.md) · [GitHub](https://github.com/zhangzhibin/10dos) · [官网](https://10dos.com)
+[English](README.md) · [GitHub](https://github.com/zhangzhibin/10dos) · [官网](https://10dos.com) · [开发日志](https://xmanyou.com/a-lightweight-todo-extension-built-with-ai/)
 
 极简 todos Chrome 扩展，使用 TypeScript 开发，点击图标即可快速查看和编辑任务。
 

@@ -1,6 +1,6 @@
 # 10dos – Minimal todos Chrome extension
 
-[中文介绍](README.zh-CN.md) · [GitHub](https://github.com/zhangzhibin/10dos) · [Site](https://10dos.com)
+[中文介绍](README.zh-CN.md) · [GitHub](https://github.com/zhangzhibin/10dos) · [Site](https://10dos.com) · [Dev log](https://xmanyou.com/a-lightweight-todo-extension-built-with-ai/)
 
 A minimal todos Chrome extension built with TypeScript. Click the extension icon to view and edit tasks quickly.
 
